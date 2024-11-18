@@ -1,0 +1,5 @@
+bunnylod/progmesh.C
+bunnylod/vectorb.C
+surfaceCoarsen.C
+
+EXE = $(FOAM_APPBIN)/surfaceCoarsen

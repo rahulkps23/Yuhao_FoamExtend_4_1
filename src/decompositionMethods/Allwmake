@@ -1,0 +1,16 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # run from this directory
+set -x
+
+# We need to recompile this library later, when all the dependencies are ready
+#wmake libso decomposeReconstruct
+
+wmakeLnInclude decompositionMethods
+
+wmake libso decompositionMethods
+wmake libso metisDecomp
+wmake libso parMetisDecomp
+wmake libso scotchDecomp
+
+
+# ----------------------------------------------------------------- end-of-file

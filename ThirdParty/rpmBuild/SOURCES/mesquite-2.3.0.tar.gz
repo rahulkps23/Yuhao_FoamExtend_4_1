@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="sandia.approved" content="SAND2023-07995W"/>
+
+  <link rel="shortcut icon" href="/assets/images/SNL_Logo.jpg">
+
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" media="screen">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen">
+
+  <link rel="stylesheet" href="https://cdn.llnl.gov/onelab/0.1.1/css/onelab.css" media="screen">
+  <link rel="stylesheet" href="/css/main.css" media="screen">
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@sandialabs" />
+  <meta name="twitter:title" content="Sandia National Labs" />
+  <meta name="twitter:description" content="U.S. @Energy labs dedicated to securing a peaceful and free world through science and technology." />
+  <meta name="twitter:image" content="https://pbs.twimg.com/profile_images/1214606758221500416/qpv1F1UX_400x400.jpg" />
+
+  <meta name="google-site-verification" content="477TVoInt3HiUgSl_hU4rb5_JrgNMKK5Rl-KPMUClpQ" />
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Sandia Software Portal | Sandia National Laboratory Software Portal</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Sandia Software Portal" />
+<meta name="author" content="Sandia SEMS O&M <wg-1424-ops@sandia.gov>" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Sandia National Laboratory Software Portal" />
+<meta property="og:description" content="Sandia National Laboratory Software Portal" />
+<link rel="canonical" href="https://sandialabs.github.io/" />
+<meta property="og:url" content="https://sandialabs.github.io/" />
+<meta property="og:site_name" content="Sandia Software Portal" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Sandia Software Portal" />
+<meta name="twitter:site" content="@sandialabs" />
+<meta name="twitter:creator" content="@Sandia SEMS O&M <wg-1424-opssandia.gov>" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Sandia SEMS O&M <wg-1424-ops@sandia.gov>"},"description":"Sandia National Laboratory Software Portal","headline":"Sandia Software Portal","name":"Sandia Software Portal","url":"https://sandialabs.github.io/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+    <body ng-controller="gitHubDataController">
+
+        
+<nav id="header-slim" class="navbar navbar-default">
+
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#siteNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <a href="https://www.sandia.gov" id="sandia-logo" class="pull-left">
+        <img src="/assets/images/SNL_Stacked_Black_Blue.png" alt="Sandia National Laboratories" width="25%"/>
+      </a>
+    </div>
+
+    <div id="siteNavbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right navbar-collapse">
+        <li id="home"
+             class="active dropdown"
+            ><a class="navbar-normal" href="/">Home</a>
+        </li>
+        <li id="about"
+             class="dropdown"
+            ><a class="navbar-normal" href="/about">About</a>
+        </li>
+        <li id="explore"
+             class="dropdown"
+            ><a class="navbar-normal" href="/explore/">Explore</a>
+          <div class="dropdown-content">
+            <p><a class="navbar-normal" href="/explore/dependencies/">Dependencies</a></p>
+            <p><a class="navbar-normal" href="/explore/popular-repos/">Popular Repositories</a></p>
+          </div>
+        </li>
+        <li id="github-button"><a href="https://github.com/sandialabs"><span class="fa fa-github fa-lg"></span></a></li>
+        <li id="twitter-button"><a href="https://twitter.com/sandialabs"><span class="fa fa-twitter fa-lg"></span></a></li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+
+
+        <div>
+            <div class="banner"/>
+        </div>
+
+        <div class="container">
+            
+
+<p class="page-title">Welcome to the Sandia National Laboratories software portal — a hub for our GitHub-hosted open source projects. <br />Our <a ng-click="categoryHref('ALL SOFTWARE')" style="cursor: pointer">full catalog</a> of 714 repositories is updated regularly as repositories are added or modified.</p>
+
+<section class="flex-container" id="categories">
+    <div ng-repeat="category in catData" class="flex-category dynamic" ng-click="categoryHref(category.title)">
+        <img ng-src="{{ category.icon.path }}" style="width: 150px; height: 150px" alt="{{ category.icon.alt }}" />
+        <h4>{{ category.title }}</h4>
+        <p class="text-center">{{ category.description }}</p>
+
+        <div ng-repeat="repo in topicRepos[catData.indexOf(category)]">
+            <p class="links" ng-show="topicRepos[catData.indexOf(category)].indexOf(repo) < 4">
+                <span>
+                    <a href="https://github.com/{{ repo.ownerLogin }}" alt="View Owner on GitHub" title="Owner: {{ repo.ownerLogin }}">
+                        <img class="orgAvatar" ng-src="{{ repo.ownerAvatar }}" />
+                    </a>
+                </span>
+
+                <span>
+                    <a href="{{ repo.gitUrl }}" alt="{{ repo.description || '[No Description]' }}" title="{{ repo.description || '[No Description]' }}">
+                        {{ repo.name }}
+                    </a>
+                </span>
+
+                <span>
+                    <a href="{{ repo.gitUrl }}/stargazers" alt="Stargazers" title="Stargazers">
+                        {{ repo.stars }} <span class="fa fa-star"></span>
+                    </a>
+                </span>
+
+                <span>
+                    <a ng-click="repoHref(repo.nameWithOwner); $event.stopPropagation();" alt="Rpo Info" title="Repo Info">
+                        <span class="fa fa-info-circle"></span>
+                    </a>
+                </span>
+            </p>
+        </div>
+        <a class="more" ng-if="topicRepos[catData.indexOf(category)].length > 4">...MORE</a>
+    </div>
+</section>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/Category.service.js"></script>
+<script src="/js/category-info.js"></script>
+
+        </div>
+
+        <div id="footer-slim" class="footer">
+<div class="container">
+
+<hr />
+
+<div class="row">
+  <div class="col-lg-10 col-12">
+    <p id="colophonLogos"><a href="https://www.sandia.gov/" rel="noopener noreferrer" target="_blank"><img alt="Sandia National Laboratories" longdesc="https://www.sandia.gov" src="/assets/images/SNL_Horizontal_Black_Blue.png" height="37"></a>&nbsp;&nbsp;<a href="https://energy.gov" rel="noopener noreferrer" target="_blank" class="me-3"><img alt="U.S. Department of Energy" longdesc="https://energy.gov" src="/assets/images/doe-logo.png" width="140" height="37"></a>&nbsp;&nbsp;<a href="https://nnsa.energy.gov/" rel="noopener noreferrer" target="_blank"><img alt="National Nuclear Security Administration" longdesc="https://nnsa.gov" src="/assets/images/nnsa-logo.png" width="116" height="37"></a>
+    </p>
+    <p id="colophonLegal"><a href="https://www.sandia.gov" aria-label="SNL home url in footer">Sandia National Laboratories</a> is a multimission laboratory managed and operated by National Technology and Engineering Solutions of Sandia, LLC., a wholly owned subsidiary of Honeywell International, Inc., for the U.S. Department of Energy’s National Nuclear Security Administration under contract DE-NA-0003525.
+    </p>
+    <p id="colophonCopyright">© 2021 National Technology and Engineering Solutions of Sandia, LLC. | <a href="https://www.sandia.gov/contact_us/index.html">Questions &amp; Comments</a> | <a href="https://www.sandia.gov/general/privacy-security/index.html">Privacy &amp; Security</a>
+    </p>
+  </div>
+    <div class="col-lg-2 col-12 footer-sidenav">
+      <div class="row justify-content-between">
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+        <!-- jQuery first, then Bootstrap JS. -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script async id="twitter-wjs" src="https://platform.twitter.com/widgets.js"></script>
+
+<script src="/js/filter-repos.js"></script>
+<script src="/assets/js/anchor.min.js"></script>
+
+<script>
+    anchors.add()
+</script>
+
+<script type="text/javascript">
+$('.filterBtnGroup button').on('click', function(filterContent) {
+    $('.filterBtnGroup button').attr('disabled', false);
+    $(this).attr('disabled', true);
+    var tag = $(this).text();
+    $('.all').hide();
+    $('.' + $(this).attr('id')).fadeIn();
+    filterContent.preventDefault();
+});
+if (document.getElementById('allB')){
+    document.getElementById('allB').click();
+}
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+        
+
+
+    </body>
+</html>

@@ -1,0 +1,177 @@
+#!/bin/sh
+
+# This script installs required third-party libraries to pre-defined paths
+# to support the work of thirdPartySolversUT.
+# This script assumes foam-extend-3.2 has been installed.
+
+set -x
+
+echo ========================================
+echo Starting UT ThirdParty Install
+echo ========================================
+echo
+
+# Set number of cores for installation
+buildProcs=$WM_NCOMPPROCS
+
+# Enable mpicxx 
+#echo "Enable mpicxx"
+
+#cd $WM_THIRD_PARTY_DIR/rpmBuild/BUILD/openmpi-1.6.5
+
+#./configure \
+#--prefix=$WM_THIRD_PARTY_DIR/packages/openmpi-1.6.5/platforms/linux64GccDPOpt \
+#--exec_prefix=$WM_THIRD_PARTY_DIR/packages/openmpi-1.6.5/platforms/linux64GccDPOpt \
+#--enable-mpirun-prefix-by-default \
+#--enable-orterun-prefix-by-default \
+#--enable-shared \
+#--disable-static \
+#--without-slurm \
+#--enable-mpi-profile \
+#--without-sge \
+#--enable-mca-no-build=ras-gridengine,pls-gridengine \
+#--disable-vt
+
+#make install -j $buildProcs
+
+#######################
+#    Install cmake    #
+#######################
+echo "Downloading CMake 3.17"
+
+cd $WM_THIRD_PARTY_DIR/packages
+wget https://github.com/Kitware/CMake/releases/download/v3.17.1/cmake-3.17.1-Linux-x86_64.tar.gz
+
+tar -xvf cmake-3.17.1-Linux-x86_64.tar.gz
+rm -f cmake-3.17.1-Linux-x86_64.tar.gz 
+
+######################################
+#    Install SuperLU_dist package    #
+######################################
+echo "Downloading Superludist to destination"
+
+cd $WM_THIRD_PARTY_DIR/packages
+
+wget https://github.com/xiaoyeli/superlu_dist/archive/v5.0.0.tar.gz
+tar -xvf v5.0.0.tar.gz
+rm -f v5.0.0.tar.gz
+
+cd superlu_dist-5.0.0
+
+mkdir build
+cd build
+
+$WM_THIRD_PARTY_DIR/packages/cmake-3.17.1-Linux-x86_64/bin/cmake \
+-D TPL_PARMETIS_INCLUDE_DIRS=$PARMETIS_INCLUDE_DIR \
+-D TPL_PARMETIS_LIBRARIES="$PARMETIS_LIB_DIR/libparmetis.a;$PARMETIS_LIB_DIR/libmetis.a" \
+-D MPI_Fortran_COMPILER=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpif90 \
+-D MPI_Fortran_INCLUDE_PATH=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/include \
+-D MPI_Fortran_LIBRARIES=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/lib/libmpi_f90.so \
+-D CMAKE_C_FLAGS="-std=c99 -g" \
+-D ENABLE_BLASLIB=OFF \
+-D BUILD_SHARED_LIBS=ON \
+-D CMAKE_C_COMPILER=mpicc \
+-D CMAKE_INSTALL_PREFIX=.. \
+..
+
+make install -j $buildProcs
+cd ..
+rm -rf build CBLAS DOC EXAMPLE INSTALL MAKE_INC SRC
+
+export SUPERLUDIST_PATH=$WM_THIRD_PARTY_DIR/packages/superlu_dist-5.0.0
+
+# echo "export SUPERLUDIST_PATH=$WM_THIRD_PARTY_DIR/packages/superlu_dist-5.0.0" >> $HOME/.bashrc
+
+
+################################
+#    Install Lapack package    #
+################################
+echo "Downloading Lapack to destination"
+
+cd $WM_THIRD_PARTY_DIR/packages
+git clone https://github.com/Reference-LAPACK/lapack.git
+
+cd lapack
+git checkout 8e1e16c6300861f096744a5ab75c3572c4b9b756
+mkdir build
+cd build
+
+cmake \
+-D CMAKE_INSTALL_PREFIX:PATH="$WM_THIRD_PARTY_DIR/packages/lapack" \
+-D BUILD_SHARED_LIBS:BOOL=ON \
+..
+
+make install -j $buildProcs
+cd ..
+rm -rf build BLAS CBLAS INSTALL LAPACKE SRC CMAKE DOCS TESTING
+
+export BLAS_LIB_PATH=$WM_THIRD_PARTY_DIR/packages/lapack/lib
+
+#echo "export BLAS_LIB_PATH=$WM_THIRD_PARTY_DIR/packages/lapack/lib" >> $HOME/.bashrc
+
+
+##################################
+#    Install Trilinos package    #
+##################################
+echo "Downloading Trilinos to destination"
+
+cd $FOAM_INST_DIR
+git clone https://github.com/trilinos/Trilinos.git
+
+cd Trilinos
+git checkout 747a3e780d399a5a5b80940c8cf089c7c0ff3559
+
+mkdir build
+cd build
+
+$WM_THIRD_PARTY_DIR/packages/cmake-3.17.1-Linux-x86_64/bin/cmake \
+-D CMAKE_INSTALL_PREFIX:PATH="$WM_THIRD_PARTY_DIR/packages/trilinos" \
+-D TPL_ENABLE_MPI:BOOL=ON \
+-D MPI_BASE_DIR:PATH="$OPENMPI_DIR" \
+-D CMAKE_CXX_FLAGS:STRING="-O2 -std=c++11 -pedantic -ftrapv -Wall -Wno-long-long -Wno-old-style-cast -Wno-deprecated-declarations -Wno-literal-suffix -Wno-unused-local-typedefs" \
+-D CMAKE_BUILD_TYPE:STRING=RELEASE \
+-D Trilinos_ENABLE_Fortran:BOOL=OFF \
+-D BUILD_SHARED_LIBS:BOOL=ON \
+-D Trilinos_WARNINGS_AS_ERRORS_FLAGS:STRING="" \
+-D Trilinos_ENABLE_ALL_PACKAGES:BOOL=OFF \
+-D Trilinos_ENABLE_Teuchos:BOOL=ON \
+-D Trilinos_ENABLE_Epetra:BOOL=ON \
+-D Trilinos_ENABLE_EpetraExt:BOOL=ON \
+-D Trilinos_ENABLE_Ifpack2:BOOL=ON \
+-D Trilinos_ENABLE_AztecOO:BOOL=ON \
+-D Trilinos_ENABLE_Amesos2:BOOL=ON \
+-D Trilinos_ENABLE_Anasazi:BOOL=ON \
+-D Trilinos_ENABLE_Belos:BOOL=ON \
+-D Trilinos_ENABLE_Kokkos:BOOL=ON \
+-D Trilinos_ENABLE_Tpetra:BOOL=ON \
+-D Trilinos_ENABLE_TESTS:BOOL=OFF \
+-D TPL_ENABLE_BLAS:BOOL=ON \
+-D TPL_BLAS_LIBRARIES:PATH="$BLAS_LIB_PATH/libblas.so" \
+-D TPL_ENABLE_LAPACK:BOOL=ON \
+-D LAPACK_LIBRARY_DIRS:PATH="$BLAS_LIB_PATH" \
+-D CMAKE_VERBOSE_MAKEFILE:BOOL=OFF \
+-D Trilinos_VERBOSE_CONFIGURE:BOOL=OFF \
+-D TPL_ENABLE_ParMETIS:BOOL=ON \
+-D ParMETIS_INCLUDE_DIRS:PATH="$PARMETIS_INCLUDE_DIR" \
+-D ParMETIS_LIBRARY_DIRS:PATH="$PARMETIS_LIB_DIR" \
+-D TPL_ENABLE_SuperLUDist:BOOL=ON \
+-D Amesos2_ENABLE_Epetra:BOOL=ON \
+-D Amesos2_ENABLE_SuperLUDist:BOOL=ON \
+-D SuperLUDist_INCLUDE_DIRS:PATH="$SUPERLUDIST_PATH/include" \
+-D SuperLUDist_LIBRARY_DIRS:PATH="$SUPERLUDIST_PATH/lib" \
+..
+
+make install -j $buildProcs
+cd $FOAM_INST_DIR
+rm -rf Trilinos
+rm -rf $WM_THIRD_PARTY_DIR/packages/cmake-3.17.1-Linux-x86_64
+
+export TRILINOS_PATH=$WM_THIRD_PARTY_DIR/packages/trilinos
+
+# echo "export TRILINOS_PATH=$WM_THIRD_PARTY_DIR/packages/trilinos" >> $HOME/.bashrc
+# cp $FOAM_INST_DIR/geo32/bugFixes/trilinosBugFixes/* $WM_THIRD_PARTY_DIR/packages/trilinos/include
+
+echo ========================================
+echo Finished UT ThirdParty Install
+echo ========================================
+echo
