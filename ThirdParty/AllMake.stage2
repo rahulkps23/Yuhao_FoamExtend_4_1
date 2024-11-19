@@ -133,6 +133,8 @@ else
     echo ""
 fi
 echo "Test from Yuhao"
+ls -l /root/foam/foam-extend-4.1/ThirdParty/rpmBuild/BUILD
+ls -l /root/foam/foam-extend-4.1/ThirdParty/packages
 ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin
 echo "Test from Yuhao end"
 echo ========================================
