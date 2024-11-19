@@ -49,7 +49,10 @@ rm -f cmake-3.17.1-Linux-x86_64.tar.gz
 #    Install SuperLU_dist package    #
 ######################################
 echo "Downloading Superludist to destination"
-
+echo "Test from Yuhao"
+ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpicc
+chmod +x /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpicc
+echo "Test from Yuhao end"
 cd $WM_THIRD_PARTY_DIR/packages
 
 wget https://github.com/xiaoyeli/superlu_dist/archive/v5.0.0.tar.gz
