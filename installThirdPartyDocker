@@ -70,7 +70,7 @@ $WM_THIRD_PARTY_DIR/packages/cmake-3.17.1-Linux-x86_64/bin/cmake \
 -D CMAKE_C_FLAGS="-std=c99 -g" \
 -D ENABLE_BLASLIB=OFF \
 -D BUILD_SHARED_LIBS=ON \
--D CMAKE_C_COMPILER=mpicc \
+-D CMAKE_C_COMPILER=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpicc \
 -D CMAKE_INSTALL_PREFIX=.. \
 ..
 
