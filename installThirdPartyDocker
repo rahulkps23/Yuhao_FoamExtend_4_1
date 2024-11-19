@@ -52,7 +52,6 @@ echo "Downloading Superludist to destination"
 echo "Test from Yuhao"
 ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpicc
 ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpif90
-chmod +x /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpicc
 echo "Test from Yuhao end"
 cd $WM_THIRD_PARTY_DIR/packages
 

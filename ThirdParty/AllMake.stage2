@@ -133,8 +133,7 @@ else
     echo ""
 fi
 echo "Test from Yuhao"
-ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpicc
-ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpif90
+ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin
 echo "Test from Yuhao end"
 echo ========================================
 echo Done ThirdParty AllMake: Stage2
