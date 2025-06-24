@@ -20,8 +20,8 @@ buildProcs=$WM_NCOMPPROCS
 #cd $WM_THIRD_PARTY_DIR/rpmBuild/BUILD/openmpi-1.6.5
 
 #./configure \
-#--prefix=$WM_THIRD_PARTY_DIR/packages/openmpi-1.6.5/platforms/linux64GccDPOpt \
-#--exec_prefix=$WM_THIRD_PARTY_DIR/packages/openmpi-1.6.5/platforms/linux64GccDPOpt \
+#--prefix=$WM_THIRD_PARTY_DIR/packages/openmpi-1.6.5/platforms/$WM_OPTIONS \
+#--exec_prefix=$WM_THIRD_PARTY_DIR/packages/openmpi-1.6.5/platforms/$WM_OPTIONS \
 #--enable-mpirun-prefix-by-default \
 #--enable-orterun-prefix-by-default \
 #--enable-shared \
@@ -50,8 +50,8 @@ rm -f cmake-3.17.1-Linux-x86_64.tar.gz
 ######################################
 echo "Downloading Superludist to destination"
 echo "Test from Yuhao"
-ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpicc
-ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpif90
+ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/$WM_OPTIONS/bin/mpicc
+ls -l /root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/$WM_OPTIONS/bin/mpif90
 echo "Test from Yuhao end"
 cd $WM_THIRD_PARTY_DIR/packages
 
@@ -67,13 +67,13 @@ cd build
 $WM_THIRD_PARTY_DIR/packages/cmake-3.17.1-Linux-x86_64/bin/cmake \
 -D TPL_PARMETIS_INCLUDE_DIRS=$PARMETIS_INCLUDE_DIR \
 -D TPL_PARMETIS_LIBRARIES="$PARMETIS_LIB_DIR/libparmetis.a;$PARMETIS_LIB_DIR/libmetis.a" \
--D MPI_Fortran_COMPILER=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpif90 \
--D MPI_Fortran_INCLUDE_PATH=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/include \
--D MPI_Fortran_LIBRARIES=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/lib/libmpi_f90.so \
+-D MPI_Fortran_COMPILER=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/$WM_OPTIONS/bin/mpif90 \
+-D MPI_Fortran_INCLUDE_PATH=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/$WM_OPTIONS/include \
+-D MPI_Fortran_LIBRARIES=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/$WM_OPTIONS/lib/libmpi_f90.so \
 -D CMAKE_C_FLAGS="-std=c99 -g" \
 -D ENABLE_BLASLIB=OFF \
 -D BUILD_SHARED_LIBS=ON \
--D CMAKE_C_COMPILER=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/linux64GccDPOpt/bin/mpicc \
+-D CMAKE_C_COMPILER=/root/foam/foam-extend-4.1/ThirdParty/packages/openmpi-1.6.5/platforms/$WM_OPTIONS/bin/mpicc \
 -D CMAKE_INSTALL_PREFIX=.. \
 ..
 
